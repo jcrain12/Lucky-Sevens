@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lucky Sevens</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body style="font-family:comic sans ms;">
+
+	<div class="container col-4">
+		<h1>
+		Lucky Sevens
+		</h1>
+		<form name="lucky" onsubmit="return play();">
+			<label for="sbet">
+				Starting Bet:
+			</label>
+			<div class="input-group mb-">
+				<div class="input-group-pretend">
+					<span class="input-group-text">
+						$
+					</span>
+				</div>
+				<input type="number" id="sbet" class="form-control">
+				<div class="input-group-append">
+					<span class="input-group-text">
+						.00
+					</span>
+				</div>
+			</form>
+			<br>
+			<div class="text-left">
+				<button type="submit" id="submitButton" class="btn btn-primary">
+					Bet Now!
+				</button>
+			</div>
+		</form>
+		<br>
+		<table id="results" class="table table-striped" style="display:none;">
+			<thead>
+				<tr>
+					<th>
+						Results
+					</th>
+				</tr>
+			</thead>
+			<tbody>	
+				<tr>
+					<td>
+						Starting Bet
+					</td>
+					<td>
+						<span id="starting">
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Total Rolls Before Going Broke
+					</td>
+					<td>
+						<span id="roll">
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Highest Amount Won
+					</td>
+					<td>
+						<span id="maxwon">
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Roll Count at Highest Amount Won
+					</td>
+					<td>
+						<span id="maxroll">
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+<script>
+	function rollDice() {
+		return Math.floor(Math.random() * 6) + 1;
+	}
+
+	function play(){
+		var bet = Number(document.forms["lucky"]["sbet"].value);
+		var money = bet;
+		var die1;
+		var die2;
+		var sum;
+		var winnings = 0;
+		var rolls = 0;
+		var maxrolls = 0;
+
+		if(money<=0){
+			alert("Bet is not big enough. Need to be more than $0");
+		}
+		else{
+			while(money > 0){
+				die1 = rollDice();
+				die2 = rollDice();
+				sum = die1 + die2;
+				rolls++;
+				if(sum != 7){
+					money--;
+					console.log("lost");
+				}
+				else{
+					money += 4;
+					if(money > winnings){
+						winnings += (money-winnings);
+						maxrolls = rolls;
+					}
+					console.log("win");
+				}
+			}
+		}
+		document.getElementById("results").style.display = "block";
+		document.getElementById("submitButton").innerText = "Please Come Again!";
+		document.getElementById("starting").innerText = bet;
+		document.getElementById("roll").innerText = rolls;
+		document.getElementById("maxwon").innerText = winnings;
+		document.getElementById("maxroll").innerText = maxrolls;
+		return false;
+	}
+</script>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
